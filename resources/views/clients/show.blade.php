@@ -30,7 +30,7 @@
                     <div class="border rounded p-3 sm:p-4 mb-4 bg-gray-50">
                         <div class="flex flex-col sm:flex-row justify-between items-start gap-2 mb-3">
                             <span class="font-medium text-gray-700 text-sm sm:text-base">
-                                {{ $session->session_date->format('d.m.Y H:i') }}
+                                {{ $session->session_date->copy()->setTimezone(auth()->user()->timezone ?? 'UTC')->format('d.m.Y H:i') }}
                             </span>
                         </div>
 

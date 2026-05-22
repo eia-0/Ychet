@@ -17,7 +17,7 @@
                     <img src="{{ asset('images/logo.svg') }}" alt="Учти" class="w-14 h-14 mx-auto">
                 </a>
                 <h1 class="text-2xl font-bold text-gray-800 mt-3">Учти</h1>
-                <p class="text-sm text-gray-500 mt-1">Учти своих клиентов в приложении Учти</p>
+                <p class="text-sm text-gray-500 mt-1">Учти — видеть прогресс, знать результат.</p>
             </div>
 
             <!-- Карточка формы -->
@@ -42,7 +42,7 @@
     </div>
 
     <footer class="text-center text-gray-400 text-xs py-4">
-        © {{ date('Y') }} Учти
+        © {{ date('Y') }} Учти. Все права защищены
     </footer>
 </body>
 </html>

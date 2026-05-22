@@ -58,7 +58,11 @@
                             <td class="py-3 px-4">{{ $client->phone }}</td>
                             <td class="py-3 px-4 text-center font-medium">{{ $client->sessions_count }}</td>
                             <td class="py-3 px-4 text-gray-700">
-                                {{ optional($client->latestSession)->session_date?->format('d.m.Y H:i') ?? '—' }}
+                                @if($client->latestSession)
+                                    {{ $client->latestSession->session_date->copy()->setTimezone(auth()->user()->timezone ?? 'UTC')->format('d.m.Y H:i') }}
+                                @else
+                                    —
+                                @endif
                             </td>
                             <td class="py-3 px-4 text-right">
                                 <div class="flex items-center justify-end gap-1">
@@ -97,7 +101,11 @@
                                     {{ $client->sessions_count }} сеанс.
                                 </span>
                                 <div class="text-xs text-gray-500 mt-1">
-                                    {{ optional($client->latestSession)->session_date?->format('d.m.Y H:i') ?? '—' }}
+                                    @if($client->latestSession)
+                                        {{ $client->latestSession->session_date->copy()->setTimezone(auth()->user()->timezone ?? 'UTC')->format('d.m.Y H:i') }}
+                                    @else
+                                        —
+                                    @endif
                                 </div>
                             </div>
                         </div>

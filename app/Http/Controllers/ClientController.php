@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ClientController extends Controller
 {
@@ -36,7 +37,7 @@ class ClientController extends Controller
 
         $session = $client->sessions()->create([
             'photo_path'   => $request->file('photo') ? $request->file('photo')->store('photos', 'public') : null,
-            'session_date' => now(),
+            'session_date' => Carbon::now('UTC'),   // ← UTC
         ]);
 
         $templateFields = auth()->user()->templateFields;
@@ -61,13 +62,11 @@ class ClientController extends Controller
         return view('clients.show', compact('client'));
     }
 
-    // НОВЫЙ МЕТОД
     public function destroy(Client $client)
     {
         if ($client->user_id !== auth()->id()) abort(403);
 
-        $client->delete(); // каскадно удалятся сеансы и значения полей
-
+        $client->delete();
         return redirect()->route('dashboard')->with('success', 'Клиент удалён');
     }
 }

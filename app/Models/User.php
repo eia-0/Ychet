@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-// Импорты, которые уже есть:
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany; // добавьте эту строку
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -16,6 +15,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'timezone',         // <-- добавляем
     ];
 
     protected $hidden = [
@@ -31,7 +31,6 @@ class User extends Authenticatable
         ];
     }
 
-    // >>> ДОБАВЬТЕ ЭТИ МЕТОДЫ <<<
     public function templateFields(): HasMany
     {
         return $this->hasMany(TemplateField::class);

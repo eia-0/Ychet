@@ -6,20 +6,18 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center space-x-1">
-                        <a href="{{ url('/') }}">
-                            <img src="{{ asset('images/logo.svg') }}" alt="Учти" class="w-14 h-14 mx-auto">
-                        </a>
+                        <img src="{{ asset('images/logo.svg') }}" alt="Учти" class="w-8 h-8">
                         <span class="text-xl font-bold text-indigo-700 tracking-tight">Учти</span>
                     </a>
                 </div>
-
-                <!-- Navigation Links (optional, we keep only if needed) -->
             </div>
 
-            <!-- Settings Dropdown -->
+            <!-- Settings Dropdown (desktop) -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
-                    <span class="text-sm text-gray-600 mr-3">{{ Auth::user()->name }}</span>
+                    <a href="{{ route('profile.edit') }}" class="text-sm text-gray-600 hover:text-gray-900 underline mr-3">
+                        {{ Auth::user()->name }}
+                    </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{ route('logout') }}"
@@ -48,13 +46,15 @@
         <div class="pt-2 pb-3 space-y-1">
             @auth
                 <div class="px-4 py-2 text-sm text-gray-500">Привет, {{ Auth::user()->name }}</div>
-                <form method="POST" action="{{ route('logout') }}" class="px-4">
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    {{ __('Профиль') }}
+                </x-responsive-nav-link>
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <a href="{{ route('logout') }}"
-                       onclick="event.preventDefault(); this.closest('form').submit();"
-                       class="block w-full text-left px-2 py-2 text-base text-gray-700 hover:bg-gray-100 rounded-md">
-                        Выйти
-                    </a>
+                    <x-responsive-nav-link :href="route('logout')"
+                                           onclick="event.preventDefault(); this.closest('form').submit();">
+                        {{ __('Выйти') }}
+                    </x-responsive-nav-link>
                 </form>
             @endauth
         </div>
