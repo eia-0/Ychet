@@ -6,8 +6,8 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center space-x-1">
-                        <img src="{{ asset('images/logo.svg') }}" alt="Учти" class="w-8 h-8">
-                        <span class="text-xl font-bold text-indigo-700 tracking-tight">Учти</span>
+                        <img src="{{ asset('images/logo.svg') }}" alt="Дневник" class="w-8 h-8">
+                        <span class="text-xl font-bold text-indigo-700 tracking-tight">Дневник мастера</span>
                     </a>
                 </div>
             </div>

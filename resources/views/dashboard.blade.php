@@ -1,24 +1,24 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Мои клиенты') }}
+            {{ __('Клиенты') }}
         </h2>
     </x-slot>
 
     <div class="py-6 sm:py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             <!-- Верхняя панель с поиском и кнопками -->
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <form method="GET" class="flex gap-2 w-full sm:w-auto">
+            <div class="flex flex-col min-[660px]:flex-row min-[660px]:justify-between items-start min-[660px]:items-center gap-2">
+                <form method="GET" class="flex gap-2 w-full min-[660px]:w-auto">
                     <input type="text" name="search" placeholder="Поиск по фамилии или имени"
                            value="{{ request('search') }}"
-                           class="w-full sm:w-64 rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                           class="w-full min-[660px]:w-64 rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
                     <button type="submit"
                             class="shrink-0 inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition shadow">
                         Искать
                     </button>
                 </form>
-                <div class="flex gap-2 w-full sm:w-auto justify-end">
+                <div class="flex gap-2 w-full min-[660px]:w-auto justify-end">
                     <a href="{{ route('template-fields.index') }}"
                        class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-50 transition shadow-sm">
                         ⚙ Шаблон
@@ -35,8 +35,8 @@
                 <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">{{ session('success') }}</div>
             @endif
 
-            <!-- Таблица (десктоп) -->
-            <div class="hidden sm:block bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm overflow-x-auto">
+            <!-- Таблица (десктоп) – показывается на экранах >= 860px -->
+            <div class="hidden min-[860px]:block bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm overflow-x-auto">
                 <table class="min-w-full text-sm">
                     <thead class="bg-gray-50/80">
                         <tr>
@@ -86,8 +86,8 @@
                 </table>
             </div>
 
-            <!-- Мобильная версия: карточки -->
-            <div class="sm:hidden space-y-3">
+            <!-- Мобильная версия: карточки – показывается на экранах < 860px -->
+            <div class="min-[860px]:hidden space-y-3">
                 @foreach($clients as $client)
                     <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                         <div class="flex justify-between items-start">

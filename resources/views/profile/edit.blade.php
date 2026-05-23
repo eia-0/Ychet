@@ -125,7 +125,7 @@
             </div>
 
             <!-- Кнопка назад и ссылка на разработчика -->
-            <div class="text-center p-6">
+            <div class="text-center px-6">
                 <a href="{{ route('dashboard') }}" 
                    class="inline-flex items-center justify-center px-4 py-2 bg-gray-200 border border-gray-300 rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-wider hover:bg-gray-300 transition w-full sm:w-auto">
                     ← На главную
@@ -145,7 +145,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" 
-                            class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-wider hover:bg-red-700 transition shadow-md">
+                            class="inline-flex items-center px-4 py-2  border border-transparent rounded-xl font-semibold text-xs text-grau uppercase tracking-wider  transition shadow-md">
                         Удалить профиль
                     </button>
                 </form>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Учти') }}</title>
+    <title>{{ config('app.name', 'Дневник мастера') }}</title>
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -11,10 +11,10 @@
     <div class="flex-1 flex flex-col justify-center items-center px-4">
         <div class="max-w-2xl w-full bg-white/60 backdrop-blur-lg rounded-2xl shadow-xl p-8 sm:p-12 text-center">
             <div class="mb-6 flex justify-center">
-                <img src="{{ asset('images/logo.svg') }}" alt="Учти" class="w-16 h-16">
+                <img src="{{ asset('images/logo.svg') }}" alt="Дневник" class="w-16 h-16">
             </div>
             <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-2 tracking-tight"></h1>
-            <p class="text-lg text-gray-500 mb-8">Учти — видеть прогресс, знать результат.</p>
+            <p class="text-lg text-gray-500 mb-8">Дневник мастера — видеть прогресс, знать результат.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 @if (Route::has('login'))
                     @auth
@@ -34,7 +34,7 @@
                 @endif
             </div>
         </div>
-        <p class="mt-6 text-gray-400 text-sm">© {{ date('Y') }} Учти. Все права защищены.</p>
+        <p class="mt-6 text-gray-400 text-sm">© {{ date('Y') }} Дневник мастера. Все права защищены. V5.0</p>
     </div>
 </body>
-</html>ы
+</html>

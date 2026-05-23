@@ -3,7 +3,7 @@
 
 @section('content')
 <div>
-    <h2 class="text-xl font-semibold text-gray-800 text-center mb-6">Войти в «Учти»</h2>
+    <h2 class="text-xl font-semibold text-gray-800 text-center mb-6">Войти</h2>
 
     @if ($errors->any())
         <div class="mb-4 bg-red-50 border border-red-200 text-red-600 text-sm p-3 rounded-lg">
