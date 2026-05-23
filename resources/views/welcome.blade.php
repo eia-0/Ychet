@@ -13,7 +13,7 @@
             <div class="mb-6 flex justify-center">
                 <img src="{{ asset('images/logo.svg') }}" alt="Учти" class="w-16 h-16">
             </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-2 tracking-tight">Учти</h1>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-800 mb-2 tracking-tight"></h1>
             <p class="text-lg text-gray-500 mb-8">Учти — видеть прогресс, знать результат.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 @if (Route::has('login'))

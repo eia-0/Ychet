@@ -33,15 +33,20 @@
                             @foreach($users as $user)
                             <tr class="hover:bg-gray-50">
                                 <td class="py-2 px-4">
-                                <a href="{{ route('admin.users.show', $user) }}" class="text-indigo-600 hover:underline">
-                                    {{ $user->name }}
-                                </a>
-                            </td>
+                                    <a href="{{ route('admin.users.show', $user) }}" class="text-indigo-600 hover:underline">
+                                        {{ $user->name }}
+                                    </a>
+                                </td>
                                 <td class="py-2 px-4">{{ $user->email }}</td>
                                 <td class="py-2 px-4 text-center">{{ $user->clients_count }}</td>
                                 <td class="py-2 px-4 text-center">{{ $user->sessions_count }}</td>
                                 <td class="py-2 px-4 text-right">
-                                    <form method="POST" action="{{ route('admin.users.destroy', $user) }}"
+                                    <form method="POST" action="{{ route('admin.users.reset-password', $user) }}" class="inline"
+                                          onsubmit="return confirm('Сбросить пароль? Будет создан новый временный пароль.')">
+                                        @csrf
+                                        <button type="submit" class="text-yellow-600 hover:underline text-xs mr-2">🔑 Сбросить пароль</button>
+                                    </form>
+                                    <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="inline"
                                           onsubmit="return confirm('Удалить мастера и все его данные?')">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:underline text-xs">🗑 Удалить</button>
@@ -60,18 +65,25 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <div class="font-medium">
-                                    <a href="{{ route('admin.users.show', $user) }}" class="text-indigo-600 hover:underline">
-                                        {{ $user->name }}
-                                    </a>
-                                </div>
+                                        <a href="{{ route('admin.users.show', $user) }}" class="text-indigo-600 hover:underline">
+                                            {{ $user->name }}
+                                        </a>
+                                    </div>
                                     <div class="text-sm text-gray-500">{{ $user->email }}</div>
                                     <div class="text-sm mt-1">Клиентов: {{ $user->clients_count }}, сеансов: {{ $user->sessions_count }}</div>
                                 </div>
-                                <form method="POST" action="{{ route('admin.users.destroy', $user) }}"
-                                      onsubmit="return confirm('Удалить мастера и все его данные?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:bg-red-50 p-1 rounded">🗑</button>
-                                </form>
+                                <div class="flex space-x-1">
+                                    <form method="POST" action="{{ route('admin.users.reset-password', $user) }}"
+                                          onsubmit="return confirm('Сбросить пароль? Будет создан новый временный пароль.')">
+                                        @csrf
+                                        <button type="submit" class="text-yellow-500 hover:bg-yellow-50 p-1.5 rounded">🔑</button>
+                                    </form>
+                                    <form method="POST" action="{{ route('admin.users.destroy', $user) }}"
+                                          onsubmit="return confirm('Удалить мастера и все его данные?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:bg-red-50 p-1.5 rounded">🗑</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     @endforeach

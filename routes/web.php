@@ -21,9 +21,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 // Все маршруты для авторизованных пользователей
 Route::middleware('auth')->group(function () {
 
-    // ========== Профиль (имя, email, часовой пояс) ==========
+    // ========== Профиль ==========
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // ========== Настройка полей шаблона ==========
     Route::resource('template-fields', TemplateFieldController::class);
@@ -40,18 +42,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('clients/{client}/sessions/{session}', [ClientSessionController::class, 'destroy'])
         ->name('clients.sessions.destroy');
 
-    // ========== Админ-панель (только для пользователей с ролью admin) ==========
+    // ========== Админ-панель ==========
     Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
+        Route::get('/users/{user}', [AdminController::class, 'show'])->name('users.show');
         Route::delete('/users/{user}', [AdminController::class, 'destroy'])->name('users.destroy');
+        Route::post('/users/{user}/reset-password', [AdminController::class, 'resetPassword'])->name('users.reset-password');
     });
-
-    Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('index');
-    Route::get('/users/{user}', [AdminController::class, 'show'])->name('users.show');   // <-- добавить
-    Route::delete('/users/{user}', [AdminController::class, 'destroy'])->name('users.destroy');
-});
 });
 
-// Подключаем стандартные маршруты аутентификации Breeze
+// Стандартные маршруты аутентификации Breeze
 require __DIR__.'/auth.php';

@@ -35,7 +35,7 @@
 
         <!-- Footer -->
         <footer class="text-center text-gray-500 text-xs py-6">
-            © {{ date('Y') }} «Учти» — дневник прогресса клиентов
+            © {{ date('Y') }} Учти. Все права защищены.
         </footer>
     </body>
 </html>

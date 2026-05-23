@@ -16,7 +16,7 @@
                 <a href="{{ url('/') }}">
                     <img src="{{ asset('images/logo.svg') }}" alt="Учти" class="w-14 h-14 mx-auto">
                 </a>
-                <h1 class="text-2xl font-bold text-gray-800 mt-3">Учти</h1>
+                <h1 class="text-2xl font-bold text-gray-800 mt-3"></h1>
                 <p class="text-sm text-gray-500 mt-1">Учти — видеть прогресс, знать результат.</p>
             </div>
 

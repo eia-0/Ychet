@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -45,5 +47,18 @@ class AdminController extends Controller
         $user->delete();
 
         return back()->with('success', 'Мастер удалён');
+    }
+
+        public function resetPassword(User $user)
+    {
+        if ($user->isAdmin()) {
+            return back()->with('error', 'Нельзя сбросить пароль администратора');
+        }
+
+        // Генерируем новый временный пароль
+        $newPassword = \Illuminate\Support\Str::random(10);
+        $user->update(['password' => \Illuminate\Support\Facades\Hash::make($newPassword)]);
+
+        return back()->with('success', "Пароль сброшен. Новый временный пароль: {$newPassword}");
     }
 }
