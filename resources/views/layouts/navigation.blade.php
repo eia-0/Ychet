@@ -15,6 +15,11 @@
             <!-- Settings Dropdown (desktop) -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('admin.index') }}" class="text-sm text-red-600 hover:text-red-800 underline mr-3">
+                            Админка
+                        </a>
+                    @endif
                     <a href="{{ route('profile.edit') }}" class="text-sm text-gray-600 hover:text-gray-900 underline mr-3">
                         {{ Auth::user()->name }}
                     </a>
@@ -23,7 +28,7 @@
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault(); this.closest('form').submit();"
                            class="text-sm text-gray-600 hover:text-gray-900 underline">
-                            Выйти из аккаунта
+                            Выйти
                         </a>
                     </form>
                 @endauth
@@ -46,14 +51,22 @@
         <div class="pt-2 pb-3 space-y-1">
             @auth
                 <div class="px-4 py-2 text-sm text-gray-500">Привет, {{ Auth::user()->name }}</div>
+
+                @if(auth()->user()->isAdmin())
+                    <x-responsive-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.*')">
+                        {{ __('Админка') }}
+                    </x-responsive-nav-link>
+                @endif
+
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Профиль') }}
                 </x-responsive-nav-link>
+
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
                                            onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Выйти из аккаунта') }}
+                        {{ __('Выйти') }}
                     </x-responsive-nav-link>
                 </form>
             @endauth
