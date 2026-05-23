@@ -15,13 +15,18 @@ class ClientController extends Controller
 
     public function create()
     {
-        $templateFields = auth()->user()->templateFields()->orderBy('sort_order')->get();
-        return view('clients.create', compact('templateFields'));
+        $templates = auth()->user()->templates()->orderBy('name')->get();
+        if ($templates->isEmpty()) {
+            return redirect()->route('templates.create')->with('info', 'Сначала создайте хотя бы один шаблон.');
+        }
+        // Передаём шаблоны в представление, где будет выпадающий список и динамическая подгрузка полей
+        return view('clients.create', compact('templates'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'template_id' => 'required|exists:templates,id',
             'last_name'  => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
             'middle_name'=> 'nullable|string|max:255',
@@ -31,17 +36,20 @@ class ClientController extends Controller
             'fields.*'   => 'nullable|string',
         ]);
 
+        // Убедимся, что шаблон принадлежит текущему мастеру
+        $template = auth()->user()->templates()->findOrFail($request->template_id);
+
         $client = auth()->user()->clients()->create(
-            $request->only(['last_name', 'first_name', 'middle_name', 'phone'])
+            $request->only(['last_name', 'first_name', 'middle_name', 'phone']) + ['template_id' => $template->id]
         );
 
         $session = $client->sessions()->create([
             'photo_path'   => $request->file('photo') ? $request->file('photo')->store('photos', 'public') : null,
-            'session_date' => Carbon::now('UTC'),   // ← UTC
+            'session_date' => Carbon::now('UTC'),
         ]);
 
-        $templateFields = auth()->user()->templateFields;
-        foreach ($templateFields as $field) {
+        // Сохраняем значения полей выбранного шаблона
+        foreach ($template->fields as $field) {
             $session->fieldValues()->create([
                 'template_field_id' => $field->id,
                 'value'             => $request->input('fields.' . $field->id) ?? '',
@@ -57,7 +65,7 @@ class ClientController extends Controller
 
         $client->load(['sessions' => function ($query) {
             $query->orderBy('session_date', 'desc');
-        }, 'sessions.fieldValues.templateField']);
+        }, 'sessions.fieldValues.templateField', 'template']);
 
         return view('clients.show', compact('client'));
     }
@@ -65,7 +73,6 @@ class ClientController extends Controller
     public function destroy(Client $client)
     {
         if ($client->user_id !== auth()->id()) abort(403);
-
         $client->delete();
         return redirect()->route('dashboard')->with('success', 'Клиент удалён');
     }

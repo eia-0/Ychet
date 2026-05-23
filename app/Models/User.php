@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Client::class);
     }
+
+        public function templates(): HasMany
+    {
+        return $this->hasMany(Template::class);
+    }
 }

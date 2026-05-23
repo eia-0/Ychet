@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TemplateField extends Model
 {
-    protected $fillable = ['user_id', 'name', 'type', 'sort_order'];
+    protected $fillable = ['template_id', 'name', 'type', 'sort_order'];
 
-    public function user(): BelongsTo
+    public function template(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Template::class);
     }
 
     public function sessionFieldValues(): HasMany

@@ -1,48 +1,44 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\TemplateFieldController;
+use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientSessionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
-// Главная страница (Welcome)
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Дашборд (после входа)
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-// Все маршруты для авторизованных пользователей
 Route::middleware('auth')->group(function () {
-
-    // ========== Профиль ==========
+    // Профиль
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // ========== Настройка полей шаблона ==========
-    Route::resource('template-fields', TemplateFieldController::class);
+    // Шаблоны
+    Route::resource('templates', TemplateController::class);
+    Route::post('templates/{template}/fields', [TemplateController::class, 'addField'])->name('templates.fields.store');
+    Route::delete('templates/{template}/fields/{field}', [TemplateController::class, 'removeField'])->name('templates.fields.destroy');
+    // AJAX-загрузка полей шаблона
+    Route::get('templates/{template}/fields-data', [TemplateController::class, 'getFields'])->name('templates.fields.data');
 
-    // ========== Клиенты ==========
-    Route::resource('clients', ClientController::class)
-        ->only(['create', 'store', 'show', 'destroy']);
+    // Клиенты
+    Route::resource('clients', ClientController::class)->only(['create', 'store', 'show', 'destroy']);
 
-    // ========== Сеансы клиентов ==========
-    Route::get('clients/{client}/sessions/create', [ClientSessionController::class, 'create'])
-        ->name('clients.sessions.create');
-    Route::post('clients/{client}/sessions', [ClientSessionController::class, 'store'])
-        ->name('clients.sessions.store');
-    Route::delete('clients/{client}/sessions/{session}', [ClientSessionController::class, 'destroy'])
-        ->name('clients.sessions.destroy');
+    // Сеансы
+    Route::get('clients/{client}/sessions/create', [ClientSessionController::class, 'create'])->name('clients.sessions.create');
+    Route::post('clients/{client}/sessions', [ClientSessionController::class, 'store'])->name('clients.sessions.store');
+    Route::delete('clients/{client}/sessions/{session}', [ClientSessionController::class, 'destroy'])->name('clients.sessions.destroy');
 
-    // ========== Админ-панель ==========
+    // Админка
     Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::get('/users/{user}', [AdminController::class, 'show'])->name('users.show');
@@ -51,5 +47,4 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// Стандартные маршруты аутентификации Breeze
 require __DIR__.'/auth.php';

@@ -9,7 +9,9 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $query = auth()->user()->clients()->withCount('sessions');
+        $query = auth()->user()->clients()
+            ->withCount('sessions')
+            ->with('latestSession');
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -19,7 +21,13 @@ class DashboardController extends Controller
             });
         }
 
+        if ($request->filled('template_id')) {
+            $query->where('template_id', $request->template_id);
+        }
+
         $clients = $query->orderBy('last_name')->paginate(10);
-        return view('dashboard', compact('clients'));
+        $templates = auth()->user()->templates()->orderBy('name')->get();
+
+        return view('dashboard', compact('clients', 'templates'));
     }
 }
