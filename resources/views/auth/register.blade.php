@@ -63,5 +63,12 @@
             {{ __('Зарегистрироваться') }}
         </button>
     </form>
+
+    {{-- Ссылка на разработчика --}}
+    <div class="text-center mt-4">
+        <a href="https://max.ru/u/f9LHodD0cOJloELvW-_o56QfDA7xwbHghQLYkXo0_pGiRhhId7dSsQO2iVA" target="_blank" class="text-sm text-gray-500 hover:text-gray-700 underline">
+            Написать разработчику
+        </a>
+    </div>
 </div>
 @endsection

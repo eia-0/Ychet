@@ -57,6 +57,19 @@
                             class="w-full inline-flex justify-center items-center px-4 py-3 bg-indigo-600 border border-transparent rounded-xl font-semibold text-white uppercase tracking-wider hover:bg-indigo-700 transition shadow-md">
                         Сохранить
                     </button>
+                    <!-- Кнопка назад -->
+                    <div class="mt-4 text-center">
+                        <a href="{{ route('dashboard') }}" 
+                           class="inline-flex items-center justify-center px-4 py-2 bg-gray-200 border border-gray-300 rounded-xl font-semibold text-xs text-gray-700 uppercase tracking-wider hover:bg-gray-300 transition w-full sm:w-auto">
+                            ← На главную
+                        </a>
+                    </div>
+                    <div class="text-center mt-4">
+                    <a href="https://max.ru/u/f9LHodD0cOJloELvW-_o56QfDA7xwbHghQLYkXo0_pGiRhhId7dSsQO2iVA" target="_blank" class="text-sm text-gray-500 hover:text-gray-700 underline">
+                        Есть вопросы или предложения? Напишите разработчику
+                    </a>
+                    <p>почта: eia_0@mail.ru</p>
+                </div>
                 </form>
             </div>
         </div>

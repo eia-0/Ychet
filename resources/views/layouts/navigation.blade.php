@@ -23,7 +23,7 @@
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault(); this.closest('form').submit();"
                            class="text-sm text-gray-600 hover:text-gray-900 underline">
-                            Выйти
+                            Выйти из аккаунта
                         </a>
                     </form>
                 @endauth
@@ -53,7 +53,7 @@
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
                                            onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Выйти') }}
+                        {{ __('Выйти из аккаунта') }}
                     </x-responsive-nav-link>
                 </form>
             @endauth

@@ -5,7 +5,6 @@
 <div>
     <h2 class="text-xl font-semibold text-gray-800 text-center mb-6">Войти в «Учти»</h2>
 
-    <!-- Сессионные ошибки (Breeze передаёт их стандартно) -->
     @if ($errors->any())
         <div class="mb-4 bg-red-50 border border-red-200 text-red-600 text-sm p-3 rounded-lg">
             <ul class="list-disc list-inside">
@@ -45,12 +44,11 @@
                 <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
                 <span class="ms-2">{{ __('Запомнить меня') }}</span>
             </label>
-            <!-- @if (Route::has('password.request'))
+            @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}" class="text-sm text-indigo-600 hover:underline">
                     {{ __('Забыли пароль?') }}
                 </a>
-            @endif-->
-            
+            @endif
         </div>
 
         <button type="submit"
@@ -58,5 +56,13 @@
             {{ __('Войти') }}
         </button>
     </form>
+
+    {{-- Ссылка на разработчика --}}
+    <div class="text-center mt-4">
+        <a href="https://max.ru/u/f9LHodD0cOJloELvW-_o56QfDA7xwbHghQLYkXo0_pGiRhhId7dSsQO2iVA" target="_blank" class="text-sm text-gray-500 hover:text-gray-700 underline">
+            Написать разработчику
+        </a>
+        
+    </div>
 </div>
 @endsection
