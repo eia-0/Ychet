@@ -58,10 +58,35 @@
                                                 </table>
                                             </div>
 
-                                            @if($session->photo_path)
-                                                <div class="mt-3 flex justify-center">
-                                                    <div class="w-2/3 sm:w-1/2 lg:w-1/3 aspect-[3/4] overflow-hidden rounded-lg shadow-sm">
-                                                        <img src="{{ asset('storage/' . $session->photo_path) }}" alt="Фото сеанса" class="w-full h-full object-cover">
+                                            {{-- Фото сеанса: старые одиночные + До/После --}}
+                                            @if($session->photo_path || $session->photo_before || $session->photo_after)
+                                                <div class="mt-4">
+                                                    @if($session->photo_path)
+                                                        <div class="mb-4">
+                                                            <p class="text-xs text-gray-500 mb-1">Фото</p>
+                                                            <div class="w-3/4 sm:w-1/2 lg:w-1/3 aspect-[3/4] overflow-hidden rounded-lg shadow-sm mx-auto">
+                                                                <img src="{{ asset('storage/' . $session->photo_path) }}" alt="Фото" class="w-full h-full object-cover">
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
+                                                    <div class="grid grid-cols-2 gap-4">
+                                                        @if($session->photo_before)
+                                                            <div>
+                                                                <p class="text-xs text-gray-500 mb-1">До</p>
+                                                                <div class="aspect-[3/4] overflow-hidden rounded-lg shadow-sm">
+                                                                    <img src="{{ asset('storage/' . $session->photo_before) }}" alt="До" class="w-full h-full object-cover">
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                        @if($session->photo_after)
+                                                            <div>
+                                                                <p class="text-xs text-gray-500 mb-1">После</p>
+                                                                <div class="aspect-[3/4] overflow-hidden rounded-lg shadow-sm">
+                                                                    <img src="{{ asset('storage/' . $session->photo_after) }}" alt="После" class="w-full h-full object-cover">
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             @endif

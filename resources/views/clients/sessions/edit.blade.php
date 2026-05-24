@@ -3,11 +3,12 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">
-                    Новый сеанс для {{ $client->last_name }} {{ $client->first_name }}
+                    Редактирование сеанса от {{ $session->session_date->format('d.m.Y H:i') }}
                 </h2>
 
-                <form method="POST" action="{{ route('clients.sessions.store', $client) }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('clients.sessions.update', [$client, $session]) }}" enctype="multipart/form-data">
                     @csrf
+                    @method('PATCH')
 
                     @foreach($templateFields as $field)
                         <div class="mt-4">
@@ -25,16 +26,26 @@
                         </div>
                     @endforeach
 
-                    <!-- Фото До -->
+                    <!-- Фото До (текущее + замена) -->
                     <div class="mt-6">
                         <x-input-label for="photo_before" value="Фото До" />
+                        @if($session->photo_before)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $session->photo_before) }}" class="w-32 h-32 object-cover rounded" />
+                            </div>
+                        @endif
                         <input type="file" name="photo_before" id="photo_before" accept="image/*"
                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
                     </div>
 
-                    <!-- Фото После -->
+                    <!-- Фото После (текущее + замена) -->
                     <div class="mt-4">
                         <x-input-label for="photo_after" value="Фото После" />
+                        @if($session->photo_after)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/' . $session->photo_after) }}" class="w-32 h-32 object-cover rounded" />
+                            </div>
+                        @endif
                         <input type="file" name="photo_after" id="photo_after" accept="image/*"
                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
                     </div>
@@ -43,7 +54,7 @@
                         <a href="{{ route('clients.show', $client) }}" class="text-gray-600 hover:underline py-2">← Назад к клиенту</a>
                         <button type="submit"
                                 class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500">
-                            Сохранить сеанс
+                            Обновить сеанс
                         </button>
                     </div>
                 </form>

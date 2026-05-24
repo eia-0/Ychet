@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use Illuminate\Http\Request;
+use App\Services\ImageCompressor;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
@@ -19,36 +20,47 @@ class ClientController extends Controller
         if ($templates->isEmpty()) {
             return redirect()->route('templates.create')->with('info', 'Сначала создайте хотя бы один шаблон.');
         }
-        // Передаём шаблоны в представление, где будет выпадающий список и динамическая подгрузка полей
         return view('clients.create', compact('templates'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'template_id' => 'required|exists:templates,id',
-            'last_name'  => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'middle_name'=> 'nullable|string|max:255',
-            'phone'      => 'nullable|string|max:20',
-            'photo'      => 'nullable|image|max:2048',
-            'fields'     => 'array',
-            'fields.*'   => 'nullable|string',
+            'template_id'  => 'required|exists:templates,id',
+            'last_name'    => 'required|string|max:255',
+            'first_name'   => 'required|string|max:255',
+            'middle_name'  => 'nullable|string|max:255',
+            'phone'        => 'nullable|string|max:20',
+            'photo_before' => 'nullable|image|max:10240',   // до 10 МБ
+            'photo_after'  => 'nullable|image|max:10240',
+            'fields'       => 'array',
+            'fields.*'     => 'nullable|string',
         ]);
 
-        // Убедимся, что шаблон принадлежит текущему мастеру
+        // Проверяем, что шаблон принадлежит мастеру
         $template = auth()->user()->templates()->findOrFail($request->template_id);
 
         $client = auth()->user()->clients()->create(
-            $request->only(['last_name', 'first_name', 'middle_name', 'phone']) + ['template_id' => $template->id]
+            $request->only(['last_name', 'first_name', 'middle_name', 'phone']) +
+            ['template_id' => $template->id]
         );
 
+        // Сжатие и сохранение фото
+        $compressor = new ImageCompressor();
+        $photoBefore = $request->file('photo_before')
+            ? $compressor->compressAndStore($request->file('photo_before'))
+            : null;
+        $photoAfter = $request->file('photo_after')
+            ? $compressor->compressAndStore($request->file('photo_after'))
+            : null;
+
         $session = $client->sessions()->create([
-            'photo_path'   => $request->file('photo') ? $request->file('photo')->store('photos', 'public') : null,
+            'photo_before' => $photoBefore,
+            'photo_after'  => $photoAfter,
             'session_date' => Carbon::now('UTC'),
         ]);
 
-        // Сохраняем значения полей выбранного шаблона
+        // Сохраняем значения динамических полей выбранного шаблона
         foreach ($template->fields as $field) {
             $session->fieldValues()->create([
                 'template_field_id' => $field->id,
@@ -61,19 +73,28 @@ class ClientController extends Controller
 
     public function show(Client $client)
     {
-        if ($client->user_id !== auth()->id()) abort(403);
+        if ($client->user_id !== auth()->id()) {
+            abort(403);
+        }
 
-        $client->load(['sessions' => function ($query) {
-            $query->orderBy('session_date', 'desc');
-        }, 'sessions.fieldValues.templateField', 'template']);
+        $client->load([
+            'sessions' => function ($query) {
+                $query->orderBy('session_date', 'desc');
+            },
+            'sessions.fieldValues.templateField',
+            'template',
+        ]);
 
         return view('clients.show', compact('client'));
     }
 
     public function destroy(Client $client)
     {
-        if ($client->user_id !== auth()->id()) abort(403);
-        $client->delete();
+        if ($client->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $client->delete(); // каскадное удаление сеансов и значений полей
         return redirect()->route('dashboard')->with('success', 'Клиент удалён');
     }
 }

@@ -53,23 +53,53 @@
                             </table>
                         </div>
 
-                        {{-- Фото сеанса: вертикальное, 3:4, по центру --}}
-                        @if($session->photo_path)
-                            <div class="mt-4 flex justify-center">
-                                <div class="w-3/4 sm:w-1/2 lg:w-1/3 aspect-[3/4] overflow-hidden rounded-lg shadow-md">
-                                    <img src="{{ asset('storage/' . $session->photo_path) }}"
-                                         alt="Фото сеанса"
-                                         class="w-full h-full object-cover">
+                        {{-- Фото: старые одиночные + новые До/После --}}
+                        @if($session->photo_path || $session->photo_before || $session->photo_after)
+                            <div class="mt-4">
+                                @if($session->photo_path)
+                                    <div class="mb-4">
+                                        <p class="text-xs text-gray-500 mb-1">Фото</p>
+                                        <div class="w-3/4 sm:w-1/2 lg:w-1/3 aspect-[3/4] overflow-hidden rounded-lg shadow-sm mx-auto">
+                                            <img src="{{ asset('storage/' . $session->photo_path) }}" alt="Фото" class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    @if($session->photo_before)
+                                        <div>
+                                            <p class="text-xs text-gray-500 mb-1">До</p>
+                                            <div class="aspect-[3/4] overflow-hidden rounded-lg shadow-sm">
+                                                <img src="{{ asset('storage/' . $session->photo_before) }}" alt="До" class="w-full h-full object-cover">
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if($session->photo_after)
+                                        <div>
+                                            <p class="text-xs text-gray-500 mb-1">После</p>
+                                            <div class="aspect-[3/4] overflow-hidden rounded-lg shadow-sm">
+                                                <img src="{{ asset('storage/' . $session->photo_after) }}" alt="После" class="w-full h-full object-cover">
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         @endif
 
-                        <div class="mt-3 text-right">
+                        {{-- ✨ Красивые кнопки действий --}}
+                        <div class="mt-3 flex justify-end gap-2">
+                            <a href="{{ route('clients.sessions.edit', [$client, $session]) }}"
+                               class="inline-flex items-center px-3 py-1.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium hover:bg-yellow-200 transition shadow-sm">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                Редактировать
+                            </a>
                             <form method="POST" action="{{ route('clients.sessions.destroy', [$client, $session]) }}"
                                   onsubmit="return confirm('Удалить этот сеанс?')" class="inline">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:underline text-xs sm:text-sm">
-                                    🗑 Удалить сеанс
+                                <button type="submit"
+                                        class="inline-flex items-center px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-xs font-medium hover:bg-red-200 transition shadow-sm">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    Удалить
                                 </button>
                             </form>
                         </div>

@@ -9,19 +9,34 @@ use Illuminate\Support\Facades\Storage;
 
 class ClientSession extends Model
 {
-    protected $fillable = ['client_id', 'photo_path', 'session_date'];
+    protected $fillable = [
+        'client_id',
+        'photo_path',      // оставлено для старых записей
+        'photo_before',    // новое поле «до»
+        'photo_after',     // новое поле «после»
+        'session_date',
+    ];
+
     protected $table = 'client_sessions';
 
     protected $casts = [
         'session_date' => 'datetime',
     ];
 
-    // Автоматическое удаление файла при удалении модели
     protected static function booted()
     {
         static::deleting(function (ClientSession $session) {
+            // удаляем старые одиночные фото
             if ($session->photo_path) {
                 Storage::disk('public')->delete($session->photo_path);
+            }
+            // удаляем фото «до»
+            if ($session->photo_before) {
+                Storage::disk('public')->delete($session->photo_before);
+            }
+            // удаляем фото «после»
+            if ($session->photo_after) {
+                Storage::disk('public')->delete($session->photo_after);
             }
         });
     }

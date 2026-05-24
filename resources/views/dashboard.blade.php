@@ -102,7 +102,7 @@
                             <div>
                                 <div class="font-semibold text-gray-800">{{ $client->last_name }} {{ $client->first_name }}</div>
                                 <div class="text-sm text-gray-500">{{ $client->middle_name }}</div>
-                                <div class="text-sm text-gray-600 mt-1">{{ $client->phone }}</div>
+                                <div class="text-sm text-gray-600 mt-1">+{{ $client->phone }}</div>
                                 <div class="text-xs text-indigo-600 mt-1">{{ $client->template->name ?? '' }}</div>
                             </div>
                             <div class="text-right">

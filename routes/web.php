@@ -27,7 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('templates', TemplateController::class);
     Route::post('templates/{template}/fields', [TemplateController::class, 'addField'])->name('templates.fields.store');
     Route::delete('templates/{template}/fields/{field}', [TemplateController::class, 'removeField'])->name('templates.fields.destroy');
-    // AJAX-загрузка полей шаблона
     Route::get('templates/{template}/fields-data', [TemplateController::class, 'getFields'])->name('templates.fields.data');
 
     // Клиенты
@@ -36,6 +35,8 @@ Route::middleware('auth')->group(function () {
     // Сеансы
     Route::get('clients/{client}/sessions/create', [ClientSessionController::class, 'create'])->name('clients.sessions.create');
     Route::post('clients/{client}/sessions', [ClientSessionController::class, 'store'])->name('clients.sessions.store');
+    Route::get('clients/{client}/sessions/{session}/edit', [ClientSessionController::class, 'edit'])->name('clients.sessions.edit');
+    Route::patch('clients/{client}/sessions/{session}', [ClientSessionController::class, 'update'])->name('clients.sessions.update');
     Route::delete('clients/{client}/sessions/{session}', [ClientSessionController::class, 'destroy'])->name('clients.sessions.destroy');
 
     // Админка

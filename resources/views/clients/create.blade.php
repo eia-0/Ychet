@@ -49,15 +49,21 @@
                         </div>
                     </div>
 
-                    <!-- Контейнер для динамических полей (загружаются через AJAX) -->
+                    <!-- Динамические поля шаблона -->
                     <div id="dynamic-fields" x-html="fieldsHtml"></div>
 
-                    <!-- Загрузка фото -->
+                    <!-- Фото До -->
                     <div class="mt-6">
-                        <x-input-label for="photo" value="Фото сеанса" />
-                        <input type="file" name="photo" id="photo" accept="image/*"
+                        <x-input-label for="photo_before" value="Фото До" />
+                        <input type="file" name="photo_before" id="photo_before" accept="image/*"
                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-                        @error('photo') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Фото После -->
+                    <div class="mt-4">
+                        <x-input-label for="photo_after" value="Фото После" />
+                        <input type="file" name="photo_after" id="photo_after" accept="image/*"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
                     </div>
 
                     <div class="mt-6 flex justify-between">
@@ -72,7 +78,7 @@
         </div>
     </div>
 
-    <!-- Скрипт: телефонная маска + загрузка полей шаблона -->
+    <!-- Скрипты: телефонная маска + загрузка полей шаблона -->
     <script>
         function clientForm() {
             return {
@@ -82,19 +88,15 @@
                 phoneDisplay: '',
 
                 init() {
-                    // Инициализация маски телефона
                     if (this.phoneRaw) {
                         this.phoneDisplay = this.format(this.phoneRaw);
                     }
-                    // Загрузка полей шаблона, если уже выбран
                     if (this.templateId) {
                         this.loadFields();
                     }
-                    // Отслеживаем изменение шаблона
                     this.$watch('templateId', () => this.loadFields());
                 },
 
-                // *** Методы телефонной маски ***
                 formatPhone() {
                     let value = this.phoneDisplay;
                     if (value.startsWith('+')) {
@@ -124,7 +126,6 @@
                     return formatted;
                 },
 
-                // *** Загрузка полей шаблона ***
                 async loadFields() {
                     if (this.templateId) {
                         const response = await fetch('/templates/' + this.templateId + '/fields-data');

@@ -34,7 +34,7 @@
                 @endif
             </div>
         </div>
-        <p class="mt-6 text-gray-400 text-sm">© {{ date('Y') }} Дневник мастера. Все права защищены. V5.0</p>
+        <p class="mt-6 text-gray-400 text-[10px]">© {{ date('Y') }} Дневник мастера. Все права защищены. DM_V6.0</p>
     </div>
 </body>
 </html>
